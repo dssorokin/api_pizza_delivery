@@ -8,6 +8,17 @@ const { StringDecoder } = require('string_decoder');
 const config = require('./config');
 const router = require('./router');
 
+// lib.create('test', 'newFile', {
+//     hello: 'world'
+// }).then(() => {
+//     console.log('sadf');
+// }).catch((err) => {
+//     console.log('err', err);
+//     console.log('this file already exists');
+// })
+
+// lib.delete('test', 'newFile');
+
 const httpServer = http.createServer((req, res) => {
     unifiedServer(req, res); 
 });
