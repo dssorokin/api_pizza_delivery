@@ -1,3 +1,6 @@
+const usersRoute = require('./lib/users');
+const { to } = require('./lib/functions');
+
 const handlers = {}
 
 handlers.sample = (data, callback) => {
@@ -18,7 +21,11 @@ handlers.hello = (data, callback) => {
 }
 
 handlers.users = (data, callback) => {
-    
+    const { method } = data;
+
+    usersRoute[method](data)
+        .then(([statusCode, res]) => callback(statusCode, res))
+        .catch(err => callback(err.code, { message: err.message }))
 }
 
 const router = {

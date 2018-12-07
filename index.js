@@ -7,6 +7,7 @@ const { StringDecoder } = require('string_decoder');
 
 const config = require('./config');
 const router = require('./router');
+const { parseJsonToObj } = require('./lib/functions');
 
 // lib.create('test', 'newFile', {
 //     hello: 'world'
@@ -42,7 +43,7 @@ httpsServer.listen(config.httpsPort, () => {
 const unifiedServer = async (req, res) => {
     const getDecoder = encoding => new StringDecoder(encoding);
     const getRouteHandler = (router, path) => 
-        (data, callback) => typeof router[pathname] !== 'undefined' ? router[path](data, callback) : router.notfound(data, callback);
+        (data, callback) => typeof router[path] !== 'undefined' ? router[path](data, callback) : router.notfound(data, callback);
     const getHeaders = req => req.headers;
     const getMethod = req => req.method.toLowerCase();
     const getPathname = req => url.parse(req.url).pathname.replace(/^\/+|\/+$/g, '');
@@ -80,7 +81,7 @@ const unifiedServer = async (req, res) => {
         queryParsed,
         method,
         headers,
-        payload
+        payload: parseJsonToObj(payload)
     }
 
     choosenHandler(data, (statusCode = 200, payload = {}) => {
