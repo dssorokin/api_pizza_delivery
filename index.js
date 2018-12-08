@@ -47,7 +47,7 @@ const unifiedServer = async (req, res) => {
     const getHeaders = req => req.headers;
     const getMethod = req => req.method.toLowerCase();
     const getPathname = req => url.parse(req.url).pathname.replace(/^\/+|\/+$/g, '');
-    const getQueryObj = req => querystring.parse(req.url);
+    const getQueryObj = req => querystring.parse(url.parse(req.url).query);
 
     const pathname = getPathname(req);
     const queryParsed = getQueryObj(req);

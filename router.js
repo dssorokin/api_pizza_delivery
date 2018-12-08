@@ -25,7 +25,7 @@ handlers.users = (data, callback) => {
 
     usersRoute[method](data)
         .then(([statusCode, res]) => callback(statusCode, res))
-        .catch(err => callback(err.code, { message: err.message }))
+        .catch(err => callback(err.statusCode, { message: err.message }))
 }
 
 const router = {
