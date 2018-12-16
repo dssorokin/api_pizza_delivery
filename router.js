@@ -1,5 +1,6 @@
-const usersRoute = require('./lib/users');
-const { to } = require('./lib/functions');
+const usersRoutes = require('./lib/users');
+const tokensRoutes = require('./lib/tokens');
+const checksRoutes = require('./lib/checks');
 
 const handlers = {}
 
@@ -23,7 +24,23 @@ handlers.hello = (data, callback) => {
 handlers.users = (data, callback) => {
     const { method } = data;
 
-    usersRoute[method](data)
+    usersRoutes[method](data)
+        .then(([statusCode, res]) => callback(statusCode, res))
+        .catch(err => callback(err.statusCode, { message: err.message }))
+}
+
+handlers.tokens = (data, callback) => {
+    const { method } = data;
+
+    tokensRoutes[method](data)
+        .then(([statusCode, res]) => callback(statusCode, res))
+        .catch(err => callback(err.statusCode, { message: err.message }))
+}
+
+handlers.checks = (data, callback) => {
+    const { method } = data;
+
+    checksRoutes[method](data)
         .then(([statusCode, res]) => callback(statusCode, res))
         .catch(err => callback(err.statusCode, { message: err.message }))
 }
@@ -33,7 +50,9 @@ const router = {
     'sample': handlers.sample,
     'ping': handlers.ping,
     'hello': handlers.hello,
-    'notfound': handlers.notfound
+    'notfound': handlers.notfound,
+    'tokens': handlers.tokens,
+    'checks': handlers.checks
 }
 
 module.exports = router;
